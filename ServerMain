@@ -1,0 +1,28 @@
+
+
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ServerMain {
+    public static final int PORT = 12345;
+    public static List<ClientHandler> clientHandlers = new ArrayList<>();
+
+    public static void main(String[] args) {
+        System.out.println("Server started... Waiting for clients...");
+
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            while (true) {
+                Socket socket = serverSocket.accept();
+                System.out.println("Client connected: "   + socket.getInetAddress() );
+
+                ClientHandler clientHandler = new ClientHandler(socket);
+                 clientHandlers.add(clientHandler);
+                 new Thread(clientHandler).start();
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+}
