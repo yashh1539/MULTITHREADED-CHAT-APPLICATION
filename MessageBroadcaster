@@ -1,0 +1,11 @@
+
+
+public class MessageBroadcaster {
+    public static void broadcast(String message, ClientHandler sender) {
+        for (ClientHandler client : ServerMain.clientHandlers) {
+            if (client != sender) {
+                client.getWriter().println(message);
+            }
+        }
+    }
+}
